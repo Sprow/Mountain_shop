@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form action="{% url 'checkout' %}" method="POST">
+        {% csrf_token %}
+        your name and surname: {{ form.name_surname }} <br>
+        phone number: {{ form.phone_number }} <br>
+        city: {{ form.city }} <br>
+        email: {{ form.email }} <br>
+        adress: {{ form.adress }} <br>
+        aditional information: {{ form.aditonal_information }} <br>
+        <input type="submit" class="waves-effect waves-light btn">
+    </form>
+{% endblock %}

@@ -1,0 +1,64 @@
+{#{% block jquery %}#}
+{##}
+{#    $('.btn-default').click(function(e){#}
+{#        var product = $('select option:selected').val();#}
+{#        var data = {product: product};#}
+{#        $.ajax({#}
+{#            type: 'GET',#}
+{#            url:'{% url "cart" %}',#}
+{#            data: data#}
+{#        });#}
+{#    });#}
+{##}
+{#{% endblock %}#}
+
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{##}
+{#<div class="container">#}
+{#    <div class="row products">#}
+{#        <div class="col-md-4 col-md-offset-4">#}
+{#            <form action="." method="GET">{% csrf_token %}#}
+{#                {{ form|crispy }}#}
+{#                {{ form }}#}
+{##}
+{#                <input class="btn btn-default" type="button" value="Add to cart" />#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#<div class='row cart'>#}
+{#        <div class='col-md-8 col-md-offset-2'>#}
+{##}
+{#            <h3>Your cart</h3>#}
+{##}
+{#            <table class='table'>#}
+{#                <tr>#}
+{#                    <th>Item</th>#}
+{#                    <th>Price</th>#}
+{#                    <th>Qty</th>#}
+{#                    <th>Item Total</th>#}
+{#                </tr>#}
+{##}
+{#                {% for item in cart.cartitem_set.all %}#}
+{#                    <tr>#}
+{#                        <td>{{ item.item.sku }}</td>#}
+{#                        <td>{{ item.item.price }}</td>#}
+{#                        <td>{{ item.quantity }}</td>#}
+{#                        <td>{{ item.item_total_price }}</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{##}
+{#                <tr id="checkout">#}
+{#                    <td colspan='4' class='text-right'>Total: {{cart.total}}</td>#}
+{#                </tr>#}
+{#                <tr id="checkout">#}
+{#                    <td colspan='4' class='text-right'><a class='btn btn-warning' href="{% url 'checkout' %}">Checkout</a></td>#}
+{#                </tr>#}
+{##}
+{#            </table>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#{% endblock %}#}

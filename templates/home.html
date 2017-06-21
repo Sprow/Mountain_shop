@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p>Home page</p>
+    Search:
+    <form action="{% url 'home' %}" method="GET">
+        <select>
+          <option>all</option>
+          <option>Vacuum cleaners</option>
+          <option>Televisors</option>
+          <option>Keyboards</option>
+        </select>
+        <input type="text" name="search">
+        <input type="submit" value="search">
+    </form>
+    <br>
+
+    ---------------------------------------------------<br>
+    ---- Your Cart ---- <br>
+    {% if cart %}
+        {% for item in cart %}
+            {% for key, val in item.items %}
+                product name : {{ key.title }}, price :{{ key.price }} grn, quantity: {{ val }} <br>
+            {% endfor %}
+        {% endfor %}
+        <a href="{% url 'cart' %}">Go to cart</a> <br>
+    {% else %}
+        your cart is empty<br>
+    {% endif %}
+---------------------------------------------------<br>
+    <br>
+    
+    {% for product in products %}
+        product name: {{ product.title }} <br>
+        price: {{ product.price }} grn<br>
+        image: <img src="{{ product.image.url }}" width="150" alt="">  <br>
+        <a href="{% url 'single_product' product_id=product.id %}">More information</a>
+
+        <br>
+        <form class="input-field inline" action="{% url 'home' %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="add to cart">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+        </form>
+        <hr>
+    {% endfor %}
+{% endblock content %}

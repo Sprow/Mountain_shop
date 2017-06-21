@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    YOUR CART <br>
+    <hr>
+    <br>
+    {% if cart %}
+        {% for item in cart %}
+            {% for key, val in item.items %}
+                product name : {{ key.title }}<br>
+                price :{{ key.price }} grn<br>
+                quantity: {{ val }} <br>
+                image: <img src="{{ key.image.url }}" width="150" alt="">  <br>
+                <form action="{% url 'cart' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" name="create" value="Change">
+                    <input type="hidden" name="product_id" value="{{ key.id }}">
+                </form>
+
+                <form action="{% url 'cart' %}" method="POST">
+                    {% csrf_token %}
+                    {{ delete_form }}
+                    <input type="submit" name="delete" value="delete">
+                    <input type="hidden" name="product_id" value="{{ key.id }}">
+                </form>
+                <hr>
+            {% endfor %}
+            <br>
+        {% endfor %}
+        Total price {{ total_price }} grn
+    {% else %}
+        your cart is empty<br>
+    {% endif %}
+    <br>
+    <a href="{% url 'checkout' %}">checkout</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    single product <br>
+    title --- {{ product.title }} <br>
+    description --- {{ product.description }} <br>
+    image --- <img src="{{ product.image.url }}" height="400" alt=""> <br>
+    price --- {{ product.price }} <br>
+    available ---
+    {% if product.available %}
+        +
+    {% else %}
+        -
+    {% endif %} <br>
+    <br>
+
+{#    {% if cart %}#}
+{#        Your cart : {{ cart }}#}
+{#    {% else %}#}
+{#        your cart is empty#}
+{#    {% endif %}#}
+{#    <br>#}
+
+    <form action="{% url 'single_product' product_id=product.id %}" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+    </form>
+    <br>
+    ---- Your Cart ---- <br>
+    {% if cart %}
+        {% for item in cart %}
+            {% for key, val in item.items %}
+                product name : {{ key.title }}, price :{{ key.price }} grn, quantity: {{ val }} <br>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        your cart is empty<br>
+    {% endif %}
+
+{#    <a href="{% url 'add_item_to_cart' product_id=product.id %}">add</a> <br>#}
+
+{% endblock content %}
