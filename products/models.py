@@ -9,7 +9,7 @@ class Product(models.Model):
     image = models.FileField(upload_to=get_file_path)
     price = models.CharField(max_length=30)
     available = models.BooleanField(default=True)
-    # quantity = models.IntegerField(default=1)
+    classification = models.CharField(max_length=40)
 
     def __str__(self):
         return self.title

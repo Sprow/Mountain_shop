@@ -3,8 +3,7 @@ from django.http import Http404
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
-import json
-import smtplib
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from products.models import Product
 from products.serializers import ProductSerializer
@@ -13,12 +12,13 @@ from products.forms import ProductsForm, DeleteItemFromCartForm, CheckoutForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from utils import gen_page_list
+
 # def home_page(request):
 #     return render(request, "home.html")
 
 
 def products(request):
-    products = Product.objects.all()
     cart = view_cart(request)
 
     form = ProductsForm()
@@ -29,9 +29,23 @@ def products(request):
             product_id = request.POST.get('product_id')
             add_item_to_cart(request, product_id=product_id, quantity=quantity)
             return HttpResponseRedirect(reverse("home"))
+    products = Product.objects.all()
+    paginator = Paginator(products, 5)
+    page = request.GET.get('page', 1)
+    last_page = paginator.num_pages
+    paginator_gen_list = gen_page_list(int(page), paginator.num_pages)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
     return render(request, "home.html", {"products": products,
                                          "cart": cart,
-                                         "form": form})
+                                         "form": form,
+                                         "last_page": last_page,
+                                         "paginator_gen_list": paginator_gen_list})
 
 
 def cart(request):
