@@ -4,15 +4,7 @@
     <p>Home page</p>
     Search:
     <form action="{% url 'home' %}" method="GET">
-{#        {% csrf_token %} #}
         {{ search_form }}
-{#        <select name="classification">#}
-{#          <option>all</option>#}
-{#          <option>Vacuum cleaners</option>#}
-{#          <option>Fridge</option>#}
-{#          <option>Flatiron</option>#}
-{#        </select>#}
-{#        <input type="text" name="search">#}
         <input type="submit" value="search">
     </form>
     <br>

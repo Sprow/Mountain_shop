@@ -23,33 +23,23 @@ def products(request):
     products = Product.objects.all().order_by("-id")
     form = ProductsForm()
     search_form = SearchForm()
-    # if request.method == "POST":
-    #     if "search" in request.POST:
-    #         search_form = SearchForm(request.POST)
-    #         if search_form.is_valid():
-    #             classification = search_form.cleaned_data['classification']
-    #             keyword = search_form.cleaned_data['keyword']
-    #             if not keyword:
-    #                 products = Product.objects.filter(classification=classification)
-    #             else:
-    #                 products = Product.objects.filter(title__icontains=keyword, classification=classification)
-    #     elif "add_to_cart" in request.POST:
-    #         form = ProductsForm(request.POST)
-    #         if form.is_valid():
-    #             quantity = form.cleaned_data["quantity"]
-    #             product_id = request.POST.get("product_id")
-    #             add_item_to_cart(request, product_id=product_id, quantity=quantity)
-    #             return HttpResponseRedirect(reverse("home"))
     if request.method == "GET":
         search_form = SearchForm(request.GET)
         if search_form.is_valid():
             classification = search_form.cleaned_data['classification']
             keyword = search_form.cleaned_data['keyword']
-            if not keyword:
-                products = Product.objects.filter(classification=classification)
+            # price = search_form.cleaned_data['price']
+            if not classification:
+                classification = 'all'
+
+            if classification == 'all':
+                products = Product.objects.filter(title__icontains=keyword)
             else:
-                products = Product.objects.filter(title__icontains=keyword, classification=classification)
-    # print(products)
+                if not keyword:
+                    products = Product.objects.filter(classification=classification)
+                else:
+                    products = Product.objects.filter(title__icontains=keyword, classification=classification)
+
     if request.method == "POST":
         form = ProductsForm(request.POST)
         if form.is_valid():

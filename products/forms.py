@@ -19,8 +19,10 @@ class CheckoutForm(forms.Form):
 
 
 class SearchForm(forms.Form):
-    CHOICES = (('all', 'all'), ('Vacuum cleaner', 'Vacuum cleaner'), ('Fridge', 'Fridge'),
+    CLASSIFICATION_CHOICES = (('all', 'all'), ('Vacuum cleaner', 'Vacuum cleaner'), ('Fridge', 'Fridge'),
                ('Flatiron', 'Flatiron'))
+    # PRICE_CHOICES = (('dont care', 'dont care'), ('<500', '<500'), ('500-2000', '500-2000'), ('>2000', '>2000'))
     keyword = forms.CharField(max_length=40, required=False)
-    classification = forms.ChoiceField(choices=CHOICES)
+    classification = forms.ChoiceField(choices=CLASSIFICATION_CHOICES, required=False)
+    # price = forms.ChoiceField(choices=PRICE_CHOICES, required=False)
 
