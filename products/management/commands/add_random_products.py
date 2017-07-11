@@ -14,7 +14,7 @@ class Command(BaseCommand):
                                              '-',
                                              randint(1, 5000))
             rand_available = [True, False]
-            rand_classification = choice(['flatiron', 'fridge', 'vacuum_cleaner'])
+            rand_classification = choice(['Flatiron', 'Fridge', 'Vacuum cleaner'])
             rand_vacuum_cleaner = ['product/0bd4b6d4-e97f-4b81-8a71-6d75f71a31c3.jpg',
                                    'product/1ff90290-eb9b-4f9a-8fa7-5a74345c30aa.jpg',
                                    'product/9a669519-ad3a-43c1-9f08-fd8f56fbf704.jpg']
@@ -24,11 +24,11 @@ class Command(BaseCommand):
                            'product/4578480f-2603-4425-a28c-ec7e63a894a5.jpg']
 
             def rand_img(classification):
-                if classification == 'flatiron':
+                if classification == 'Flatiron':
                     image = choice(rand_flatiron)
-                elif classification == 'fridge':
+                elif classification == 'Fridge':
                     image = choice(rand_fridge)
-                elif classification == 'vacuum_cleaner':
+                elif classification == 'Vacuum cleaner':
                     image = choice(rand_vacuum_cleaner)
                 return image
 

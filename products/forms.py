@@ -16,3 +16,11 @@ class CheckoutForm(forms.Form):
     email = forms.CharField()
     adress = forms.CharField()
     aditonal_information = forms.CharField(widget=forms.Textarea())
+
+
+class SearchForm(forms.Form):
+    CHOICES = (('all', 'all'), ('Vacuum cleaner', 'Vacuum cleaner'), ('Fridge', 'Fridge'),
+               ('Flatiron', 'Flatiron'))
+    keyword = forms.CharField(max_length=40, required=False)
+    classification = forms.ChoiceField(choices=CHOICES)
+

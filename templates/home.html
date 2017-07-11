@@ -4,13 +4,15 @@
     <p>Home page</p>
     Search:
     <form action="{% url 'home' %}" method="GET">
-        <select>
-          <option>all</option>
-          <option>Vacuum cleaners</option>
-          <option>Televisors</option>
-          <option>Keyboards</option>
-        </select>
-        <input type="text" name="search">
+{#        {% csrf_token %} #}
+        {{ search_form }}
+{#        <select name="classification">#}
+{#          <option>all</option>#}
+{#          <option>Vacuum cleaners</option>#}
+{#          <option>Fridge</option>#}
+{#          <option>Flatiron</option>#}
+{#        </select>#}
+{#        <input type="text" name="search">#}
         <input type="submit" value="search">
     </form>
     <br>
@@ -40,7 +42,7 @@
         <form class="input-field inline" action="{% url 'home' %}" method="POST">
             {% csrf_token %}
             {{ form }}
-            <input type="submit" value="add to cart">
+            <input type="submit" value="add to cart" name="add_to_cart">
             <input type="hidden" name="product_id" value="{{ product.id }}">
         </form>
         <hr>

@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from products.models import Product
 from products.serializers import ProductSerializer
-from products.forms import ProductsForm, DeleteItemFromCartForm, CheckoutForm
+from products.forms import ProductsForm, DeleteItemFromCartForm, CheckoutForm, SearchForm
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -20,16 +20,45 @@ from utils import gen_page_list
 
 def products(request):
     cart = view_cart(request)
-
+    products = Product.objects.all().order_by("-id")
     form = ProductsForm()
+    search_form = SearchForm()
+    # if request.method == "POST":
+    #     if "search" in request.POST:
+    #         search_form = SearchForm(request.POST)
+    #         if search_form.is_valid():
+    #             classification = search_form.cleaned_data['classification']
+    #             keyword = search_form.cleaned_data['keyword']
+    #             if not keyword:
+    #                 products = Product.objects.filter(classification=classification)
+    #             else:
+    #                 products = Product.objects.filter(title__icontains=keyword, classification=classification)
+    #     elif "add_to_cart" in request.POST:
+    #         form = ProductsForm(request.POST)
+    #         if form.is_valid():
+    #             quantity = form.cleaned_data["quantity"]
+    #             product_id = request.POST.get("product_id")
+    #             add_item_to_cart(request, product_id=product_id, quantity=quantity)
+    #             return HttpResponseRedirect(reverse("home"))
+    if request.method == "GET":
+        search_form = SearchForm(request.GET)
+        if search_form.is_valid():
+            classification = search_form.cleaned_data['classification']
+            keyword = search_form.cleaned_data['keyword']
+            if not keyword:
+                products = Product.objects.filter(classification=classification)
+            else:
+                products = Product.objects.filter(title__icontains=keyword, classification=classification)
+    # print(products)
     if request.method == "POST":
         form = ProductsForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data["quantity"]
-            product_id = request.POST.get('product_id')
+            product_id = request.POST.get("product_id")
             add_item_to_cart(request, product_id=product_id, quantity=quantity)
             return HttpResponseRedirect(reverse("home"))
-    products = Product.objects.all()
+
+
     paginator = Paginator(products, 5)
     page = request.GET.get('page', 1)
     last_page = paginator.num_pages
@@ -45,7 +74,8 @@ def products(request):
                                          "cart": cart,
                                          "form": form,
                                          "last_page": last_page,
-                                         "paginator_gen_list": paginator_gen_list})
+                                         "paginator_gen_list": paginator_gen_list,
+                                         "search_form": search_form})
 
 
 def cart(request):
@@ -157,6 +187,7 @@ def checkout(request):
             # s.login(from_addr, password)
             # s.sendmail(from_addr, [to_addr], msg)
     return render(request, "checkout.html", {"form": form})
+
 
 
 class GetSingleProductView(APIView):
