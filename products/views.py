@@ -28,17 +28,26 @@ def products(request):
         if search_form.is_valid():
             classification = search_form.cleaned_data['classification']
             keyword = search_form.cleaned_data['keyword']
-            # price = search_form.cleaned_data['price']
+            price = search_form.cleaned_data['price']
             if not classification:
                 classification = 'all'
+            if not price:
+                price = 'dont care'
+            kwargs = {}
+            if keyword:
+                kwargs['title__icontains'] = keyword
+            if classification !='all':
+                kwargs['classification'] = classification
+            if price !='dont care':
+                if price =='<500':
+                    kwargs['price__lte'] = 500
+                elif price =='500-2000':
+                    kwargs['price__gte'] = 500
+                    kwargs['price__lte'] = 2000
+                elif price =='>2000':
+                    kwargs['price__gte'] = 2000
+            products = Product.objects.filter(**kwargs)
 
-            if classification == 'all':
-                products = Product.objects.filter(title__icontains=keyword)
-            else:
-                if not keyword:
-                    products = Product.objects.filter(classification=classification)
-                else:
-                    products = Product.objects.filter(title__icontains=keyword, classification=classification)
 
     if request.method == "POST":
         form = ProductsForm(request.POST)
@@ -47,7 +56,6 @@ def products(request):
             product_id = request.POST.get("product_id")
             add_item_to_cart(request, product_id=product_id, quantity=quantity)
             return HttpResponseRedirect(reverse("home"))
-
 
     paginator = Paginator(products, 5)
     page = request.GET.get('page', 1)
