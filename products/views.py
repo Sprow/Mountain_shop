@@ -48,7 +48,6 @@ def products(request):
                     kwargs['price__gte'] = 2000
             products = Product.objects.filter(**kwargs)
 
-
     if request.method == "POST":
         form = ProductsForm(request.POST)
         if form.is_valid():

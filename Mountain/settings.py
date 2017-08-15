@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # project apps
+    'accounts',
     'products',
     'cart',
 
@@ -125,7 +126,10 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
 
+AUTH_USER_MODEL = 'accounts.User'
+
 CART_SESSION_ID = 'cart'
+
 
 
 # EMAIL_HOST = 'smtp.ukr.net'

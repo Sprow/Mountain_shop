@@ -13,7 +13,7 @@ urlpatterns = [
 
     url(r'^products/', include('products.urls')),
     url(r'^docs/', include('rest_framework_docs.urls')),
-    # url(r'^cart/', include('cart.urls')),
+    url(r'^accounts/', include('accounts.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
